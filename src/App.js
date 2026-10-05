@@ -26,7 +26,6 @@ import "./index.css";
 ========================= */
 
 const encoder = new TextEncoder();
-const decoder = new TextDecoder();
 
 const bufferToBase64 = (buffer) => {
   const bytes = new Uint8Array(buffer);
@@ -336,6 +335,8 @@ function App() {
         setMessageType("success");
       }
     } catch (error) {
+      console.error(error);
+
       if (isEncrypt) {
         setMessage("Encryption failed. Please try again.");
       } else {
@@ -354,6 +355,7 @@ function App() {
 
   const formatSize = (bytes) => {
     if (bytes < 1024) return `${bytes} B`;
+
     if (bytes < 1024 * 1024) {
       return `${(bytes / 1024).toFixed(1)} KB`;
     }
@@ -444,13 +446,18 @@ function App() {
             <div className="visual-card">
               <div className="visual-top">
                 <span>SECUREPDF</span>
+
                 <span className="live-indicator">
                   <span />
                   ACTIVE
                 </span>
               </div>
 
-              <div className={`pdf-visual ${isEncrypt ? "locked" : "unlocked"}`}>
+              <div
+                className={`pdf-visual ${
+                  isEncrypt ? "locked" : "unlocked"
+                }`}
+              >
                 <div className="pdf-sheet">
                   <div className="pdf-fold" />
 
@@ -509,9 +516,7 @@ function App() {
               <div>
                 <div className="panel-kicker">DOCUMENT TOOL</div>
 
-                <h2>
-                  {isEncrypt ? "Encrypt PDF" : "Decrypt PDF"}
-                </h2>
+                <h2>{isEncrypt ? "Encrypt PDF" : "Decrypt PDF"}</h2>
 
                 <p>
                   {isEncrypt
@@ -520,7 +525,11 @@ function App() {
                 </p>
               </div>
 
-              <div className={`mode-icon ${isEncrypt ? "locked" : "unlocked"}`}>
+              <div
+                className={`mode-icon ${
+                  isEncrypt ? "locked" : "unlocked"
+                }`}
+              >
                 {isEncrypt ? <Lock size={22} /> : <Unlock size={22} />}
               </div>
             </div>
@@ -556,13 +565,19 @@ function App() {
               onDragLeave={() => setDragActive(false)}
               onDrop={handleDrop}
               onClick={() => {
-                if (!file) fileInputRef.current?.click();
+                if (!file) {
+                  fileInputRef.current?.click();
+                }
               }}
             >
               <input
                 ref={fileInputRef}
                 type="file"
-                accept={isEncrypt ? ".pdf,application/pdf" : ".securepdf"}
+                accept={
+                  isEncrypt
+                    ? ".pdf,application/pdf"
+                    : ".securepdf"
+                }
                 onChange={handleFileChange}
                 hidden
               />
@@ -584,7 +599,9 @@ function App() {
                   </div>
 
                   <div className="upload-limit">
-                    {isEncrypt ? "PDF • MAX 50 MB" : "SECUREPDF FILE"}
+                    {isEncrypt
+                      ? "PDF • MAX 50 MB"
+                      : "SECUREPDF FILE"}
                   </div>
                 </>
               ) : (
@@ -629,10 +646,16 @@ function App() {
                 />
 
                 <button
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() =>
+                    setShowPassword(!showPassword)
+                  }
                   type="button"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
                 </button>
               </div>
 
@@ -642,12 +665,16 @@ function App() {
                     {[1, 2, 3, 4, 5].map((item) => (
                       <span
                         key={item}
-                        className={item <= strength ? "filled" : ""}
+                        className={
+                          item <= strength ? "filled" : ""
+                        }
                       />
                     ))}
                   </div>
 
-                  <span className={`strength-label strength-${strength}`}>
+                  <span
+                    className={`strength-label strength-${strength}`}
+                  >
                     {strengthLabel()}
                   </span>
                 </div>
@@ -661,11 +688,15 @@ function App() {
                     type={showConfirm ? "text" : "password"}
                     placeholder="Confirm password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) =>
+                      setConfirmPassword(e.target.value)
+                    }
                   />
 
                   <button
-                    onClick={() => setShowConfirm(!showConfirm)}
+                    onClick={() =>
+                      setShowConfirm(!showConfirm)
+                    }
                     type="button"
                   >
                     {showConfirm ? (
@@ -680,7 +711,9 @@ function App() {
 
             {/* ACTION */}
             <button
-              className={`action-button ${isEncrypt ? "encrypt" : "decrypt"}`}
+              className={`action-button ${
+                isEncrypt ? "encrypt" : "decrypt"
+              }`}
               onClick={handleSubmit}
               disabled={processing}
             >
@@ -691,8 +724,16 @@ function App() {
                 </>
               ) : (
                 <>
-                  {isEncrypt ? <Lock size={19} /> : <Unlock size={19} />}
-                  {isEncrypt ? "Encrypt PDF" : "Decrypt PDF"}
+                  {isEncrypt ? (
+                    <Lock size={19} />
+                  ) : (
+                    <Unlock size={19} />
+                  )}
+
+                  {isEncrypt
+                    ? "Encrypt PDF"
+                    : "Decrypt PDF"}
+
                   <ArrowRight size={19} />
                 </>
               )}
@@ -710,14 +751,19 @@ function App() {
                 <span>{message}</span>
 
                 {messageType === "success" && (
-                  <Download size={17} className="message-download" />
+                  <Download
+                    size={17}
+                    className="message-download"
+                  />
                 )}
               </div>
             )}
 
             <div className="privacy-note">
               <ShieldCheck size={16} />
-              <span>Your files are processed locally in your browser.</span>
+              <span>
+                Your files are processed locally in your browser.
+              </span>
             </div>
           </div>
         </section>
